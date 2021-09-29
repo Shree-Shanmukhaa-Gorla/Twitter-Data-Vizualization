@@ -1,0 +1,134 @@
+<%- include ('partials/header') %>
+<%- include ('partials/navbar') %>
+
+<style>
+    .idTable table,.idTable th,.idTable td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    .idTable th,.idTable td {
+      padding: 5px;
+      text-align: center;
+    }
+</style>
+
+<body>
+    <h2 style="text-align: center; margin: 10px auto;">Showing Tweet Data with ID: <b><%= tweet[0].id %></b>  </h2>
+
+    <table class="idTable" style="width: 70vw; margin: 0 auto;">
+        <tr>
+            <th>Author ID:</th> 
+            <td> <%= tweet[0].author_id %> </td>
+        </tr>
+        <tr>
+            <th>Source:</th> 
+            <td> <%= tweet[0].source %> </td>
+        </tr>
+        <tr>
+            <th>Language:</th> 
+            <td> <%= tweet[0].lang %> </td>
+        </tr>
+        <tr>
+            <th>Retweet Count:</th> 
+            <td> <%= tweet[0].public_metrics.retweet_count %> </td>
+        </tr>
+        <tr>
+            <th>Reply Count:</th> 
+            <td> <%= tweet[0].public_metrics.reply_count %> </td>
+        </tr>
+        <tr>
+            <th>Like Count:</th> 
+            <td> <%= tweet[0].public_metrics.like_count %> </td>
+        </tr>
+        <tr>
+            <th>Quote Count:</th> 
+            <td> <%= tweet[0].public_metrics.quote_count %> </td>
+        </tr>
+        <tr>
+            <th>Created At:</th> 
+            <td> <%= tweet[0].created_at %> </td>
+        </tr>       
+    </table>
+   
+    <!-- <table id="my_table" class="display" style="width: 80%;">
+        <thead>
+            <tr>
+            <th style="border: 1px solid black;">Tweet ID</th>
+            <th style="border: 1px solid black;">Source</th>
+            <th style="border: 1px solid black;">Langauge</th>
+            <th style="border: 1px solid black;">Retweet Count</th>
+            <th style="border: 1px solid black;">Reply Count</th>
+            <th style="border: 1px solid black;">Like Count</th>
+            <th style="border: 1px solid black;">Quote Count</th>
+            <th style="border: 1px solid black;">Created At</th>
+            <th style="border: 1px solid black;">Tweet Text</th>
+            <th style="border: 1px solid black;">Author ID</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <%#tweet.forEach(t => { %>
+         
+                <tr style="font-size: medium;">
+                    <td style="border: 1px solid black;"><%#= t.id %></a></td>
+                    <td style="border: 1px solid black;"><%#= t.source %></td>
+                    <td style="border: 1px solid black;"><%#= t.lang %></td>
+                    <td style="border: 1px solid black;"><%#= t.public_metrics.retweet_count %></td>
+                    <td style="border: 1px solid black;"><%#= t.public_metrics.reply_count %></td>
+                    <td style="border: 1px solid black;"><%#= t.public_metrics.like_count %></td>
+                    <td style="border: 1px solid black;"><%#= t.public_metrics.quote_count %></td>
+                    <td style="border: 1px solid black;"><%#= t.created_at %></td>
+                    <td style="border: 1px solid black;"><%#= t.text %></td>
+                    <td style="border: 1px solid black;"><%#= t.author_id %></td>
+                </tr>
+            <%# }) %>
+        </tbody>
+    </table> -->
+<div>
+    <canvas id="chart">hi</canvas>
+</div>
+<script>
+    var file = 'languages.csv';
+    d3.csv(file).then(makeChart);
+    function makeChart(lang) {
+        var language = lang.map(function(d){return d.Language});
+        var count = lang.map(function(d) {return d.Count});
+        console.log(language);
+        //Set Min for better visiable range
+        var minX = d3.min(count);
+        minX -= 10;
+        
+        var chart = new Chart('chart', {
+            type: 'horizontalBar',
+            data: {
+                labels: language,
+                datasets: [
+                    {
+                        data: count
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: file
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            ticks: {
+                                suggestedMin: minX,
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,115 @@
+<%- include ('partials/header') %>
+<%- include ('partials/navbar') %>
+
+<div style="width: 80vw; margin:20px auto; height: 85vh; overflow:scroll">
+    <table class="table table-striped table-bordered" id="my_table" >
+        <thead>
+            <tr>
+                <th>Tweet ID</th>
+                <th style="width:150px">Created At</th>
+                <th>Tweet Text</th>
+                <th>Author ID</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% tweets.forEach(tweet => { %>
+                <tr >
+                    <td><a style="text-decoration:none; color: black; font-size:16px; font-weight:700" href="/tweets/<%= tweet._id %> "><%= tweet.id %></a></td>
+                    <td style="width:150px"><%= new Date(tweet.created_at).toDateString()  %></td>
+                    <td><%= tweet.text %></td>
+                    <td><%= tweet.author_id %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+<div style="width: 50%; margin:auto">   
+   <p style="margin-left: 25%; font-size: x-large;"> Count of Languages using Spark (Parallel Processing)</p>
+    <canvas style="transform: scale(1.5) translateY(50px)" id="canvas" style="width: 100%;"></canvas>
+</div>
+
+<script>
+    var file = 'http://localhost:3000/file';
+    d3.csv(file).then(makeChart);
+    function makeChart(lang) {
+        var language = lang.map(function(d){return d.Language});
+        var count = lang.map(function(d) {return d.Count});
+        //Set Min for better visiable range
+        var minX = d3.min(count);
+        minX -= 10;
+        var ctx = document.getElementById('canvas').getContext('2d');
+        // Chart.defaults.font.size = 20;
+        var chart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: language,
+                datasets: [
+                    {
+                        data: count,
+                        backgroundColor: 'purple'
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    // text: file
+                },
+                legend: {
+                    display: false
+                },
+                plugins: {
+                     legend: {
+                            labels: {
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20
+                                }
+                            }
+                        }
+                },
+                elements: {
+                        bar: {
+                            borderWidth: 2,
+                        }
+                    },
+                scales: {
+                    x: {
+                        ticks: {
+                        // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+                        callback: function(val, index) {
+                            // Hide the label of every 2nd dataset
+                            return index % 2 === 0 ? val: 's';
+                        },
+                        color: 'red',
+                        }
+                    }
+                    }
+                // scale: {
+                //     xAxes: [
+                //         {
+                //             ticks: {
+                //                 suggestedMin: minX,
+                //             }
+                //         }
+                //     ]
+                // }
+            }
+        });
+    }
+</script>
+
+
+  
+<script>
+    $(document).ready( function (){
+    $('#my_table').DataTable({
+        "processing": true,
+    });
+    });
+</script>
+
+<%- include ('partials/footer') %>

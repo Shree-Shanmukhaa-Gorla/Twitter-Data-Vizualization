@@ -1,0 +1,25 @@
+{
+  "name": "dmprojectshree",
+  "version": "1.0.0",
+  "description": "Twitter App with Data Exploration",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shree Shanmukhaa Gorla",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.12.3",
+    "node": "^15.12.0",
+    "node-fetch": "^2.6.1",
+    "twit": "^2.2.11"
+  }
+}
